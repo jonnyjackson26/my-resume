@@ -25,7 +25,7 @@ const Home = () => {
         },
         {
             company: "Utah State University",
-            role: "Teachers Assistant for Intro to Computer Science course",
+            role: "Computer Science TA",
             duration: "Aug 2024 - Current",
             description: "Held office hours for students, graded assignments, and supported the professor in an intro level computer science course ",
         }
@@ -36,13 +36,13 @@ const Home = () => {
             name: "Restoration Tour Group",
             link: "http://restorationtourgroup.com",
             content:"resto-tours-group.png",
-            description: "Created a website using React for restoration tour groups."
+            description: "Created a website using React for a religious tour group company"
         },
         {
-            name: "BOM Languages",
+            name: "Book of Mormon Languages",
             link: "http://bom-languages.web.app/",
             content: "bom-languages.png",
-            description: "Developed a website for seamlessly transitioning between languages while reading the Book of Mormon."
+            description: "Developed a website for seamlessly transitioning between many languages while reading the Book of Mormon."
         }
     ];
 
@@ -68,18 +68,6 @@ const Home = () => {
                     </p>
                 </section>
 
-
-                <section id="experience">
-                    <h2>Work Experience</h2>
-                    {experience.map((job, index) => (
-                        <div key={index} className="job-card">
-                            <h3>{job.role} - {job.company}</h3>
-                            <p>{job.duration}</p>
-                            <p>{job.description}</p>
-                        </div>
-                    ))}
-                </section>
-
                 <section id="projects">
                     <h2>Projects</h2>
                     {projects.map((project, index) => (
@@ -95,8 +83,19 @@ const Home = () => {
                 <section id="education">
                     <h2>Education</h2>
                     <p><strong>Utah State University</strong> - Bachelors of Computer Science (Jan 2024 - Current), GPA: 3.58</p>
-                    <p><strong>Kirtland High School</strong> - Graduated with High Honors (2021)</p>
                     <p><strong>Lakeland Community College</strong> - Associates of Science and Arts (2021)</p>
+                    <p><strong>Kirtland High School</strong> - Graduated with High Honors (2021)</p>
+                </section>
+
+                <section id="experience">
+                    <h2>Work Experience</h2>
+                    {experience.map((job, index) => (
+                        <div key={index} className="job-card">
+                            <h3>{job.role} - {job.company}</h3>
+                            <p>{job.duration}</p>
+                            <p>{job.description}</p>
+                        </div>
+                    ))}
                 </section>
 
                 <section id="contact">

@@ -72,7 +72,7 @@ p {
 }
 
 .job-card:hover, .project-card:hover {
-    transform: translateY(-10px);
+    transform: scale(1.02);
 }
 
 .project-card a {
@@ -82,7 +82,7 @@ p {
 }
 
 .project-card img {
-    width:200px;
+    width:100%;
 }
 
 .project-card a:hover {
