@@ -70,6 +70,65 @@ h1 {
     color: #ff5722;
 }
 
+
+
+
+/* for youtube vidoe stuff */
+.youtube-placeholder {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    width: 100%;
+    height: auto;
+}
+
+.youtube-thumbnail {
+    width: 100%;
+    display: block;
+    height: auto;
+}
+
+.play-button-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.play-button {
+    width: 80px;
+    height: 80px;
+    background-color: rgba(255, 255, 255, 0.8);
+    clip-path: polygon(20% 10%, 80% 50%, 20% 90%);
+    opacity: 0.8;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    
+    /* Add shadow and border for better contrast */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Soft shadow */
+    border: 3px solid rgba(0, 0, 0, 0.2);     /* Thin border for contrast */
+}
+
+.youtube-placeholder:hover .play-button {
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Animations */
 @keyframes fadeIn {
     from {

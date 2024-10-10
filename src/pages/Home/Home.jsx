@@ -51,9 +51,9 @@ const Home = () => {
             <nav className="sidebar">
                 <ul>
                     <li><a href="#about">About Me</a></li>
-                    <li><a href="#experience">Experience</a></li>
                     <li><a href="#projects">Projects</a></li>
                     <li><a href="#education">Education</a></li>
+                    <li><a href="#experience">Experience</a></li>
                 </ul>
             </nav>
 
@@ -63,9 +63,10 @@ const Home = () => {
                     <img src="myPfp.jpg" alt="Jonny Jackson" className="headshot" />
                     <p>
                         I'm a 20-year-old computer science major at Utah State University, originally from Kirtland, Ohio. <br/>
-                        I served a mission from November 2021 to November 2023 in the Dominican Republic for the Church of Jesus Christ of Latter-day Saints. <br/>
+                        I served a mission (2021-2023) in the Dominican Republic for the Church of Jesus Christ of Latter-day Saints. <br/>
                         I love programming, long-distance running, and cycling. Fluent in Spanish and a proud Eagle Scout.
                     </p>
+                    <a href="/resume-jonny-jackson.pdf" download className="download-resume-btn">Download PDF Resume</a>
                 </section>
 
                 <section id="projects">

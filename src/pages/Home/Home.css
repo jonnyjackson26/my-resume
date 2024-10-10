@@ -56,12 +56,43 @@ p {
     animation: fadeIn 1.5s ease-in-out;
 }
 
+/* About Section - Centered Headshot and Name */
+#about {
+    text-align: center;
+    padding: 20px;
+}
+
 .headshot {
     width: 150px;
     border-radius: 50%;
-    margin-bottom: 20px;
+    margin: 0 auto 20px auto; /* Center image and add margin below */
+    display: block;
 }
 
+#about h1 {
+    margin-bottom: 20px;
+    font-size: 2em;
+    font-weight: bold;
+    color: #333;
+}
+
+.download-resume-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #007BFF;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+.download-resume-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Project and Job Cards */
 .job-card, .project-card {
     margin-bottom: 30px;
     padding: 20px;
@@ -82,7 +113,7 @@ p {
 }
 
 .project-card img {
-    width:100%;
+    width: 100%;
 }
 
 .project-card a:hover {
@@ -96,7 +127,7 @@ p {
     gap: 15px;
     margin-top: 20px;
 }
-/* Social Links Styling */
+
 .social-links a {
     text-decoration: none; /* Remove underline */
     font-size: 24px;       /* Icon size */
@@ -112,14 +143,12 @@ p {
     transform: scale(1.2); /* Slightly enlarge the icon on hover */
 }
 
-
 .fa-facebook { color: #4267B2; }
 .fa-envelope { color: #D44638; }
 .fa-linkedin { color: #0077B5; }
 .fa-github { color: #333; }
 .fa-youtube { color: #FF0000; }
 .fa-instagram { color: #C13584; }
-
 
 /* Animations */
 @keyframes fadeIn {
@@ -148,6 +177,18 @@ p {
     section {
         margin-bottom: 40px;
     }
+
+    #about h1 {
+        font-size: 1.8em;
+    }
+
+    .headshot {
+        width: 120px;
+    }
+    .download-btn {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
 }
 
 /* Desktop View */
@@ -173,5 +214,13 @@ p {
 
     .content section {
         margin-bottom: 60px;
+    }
+
+    #about h1 {
+        font-size: 2.5em;
+    }
+
+    .headshot {
+        width: 150px;
     }
 }

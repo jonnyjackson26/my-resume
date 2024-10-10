@@ -1,88 +1,110 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import google_api_key from '../../../api_keys';
 import './Projects.css';
 
 const Projects = () => {
-    const projects = [
-        {
-            name: "Restoration Tour Group",
-            link: "http://restorationtourgroup.com",
-            github_link: "",
-            youtube_link: "",
-            content: "resto-tours-group.png",
-            description: "Created a website using React for a religious tour group company",
-            date: "June 2024",
-        },
-        {
-            name: "Book of Mormon Languages",
-            link: "http://bom-languages.web.app/",
-            github_link: "",
-            youtube_link: "",
-            content: "bom-languages.png",
-            description: "Developed a website for seamlessly transitioning between many languages while reading the Book of Mormon.",
-            date: "May 2024",
-        },
-        {
-            name: "Using NAND gates to build custom logic gates in Logism",
-            github_link: "https://github.com/jonnyjackson26/cs2810-assn1",
-            youtube_link: "https://www.youtube.com/watch?v=d_SPhLhdMPU&t=3s",
-            content: "cs2810assn1.png",
-            description: "Custom AND, XOR, OR, NOT, Mux, DMux using only NAND Gates. Also custom 8 way and 16 way OR, 16 bit and, mux, not gates.",
-            date: "September 2024",
-        },
-        {
-            name: "Custom Half and Full Adders in Logism",
-            github_link: "https://github.com/jonnyjackson26/cs2810-assn2",
-            youtube_link: "",
-            content: "cs2810assn2.png",
-            description: "Custom half adder and full adder. 16 bit incrementor. 8 and 4 way multiplexers and demultiplexers.",
-            date: "September 2024",
-        },
-        {
-            name: "ChatGPT translations of the Book of Mormon",
-            github_link: "https://github.com/jonnyjackson26/chatgpt_simplified_translation_bom",
-            youtube_link: "",
-            content: "chatGptTranslationsOfBom.png",
-            description: "Open AI API used to make a southern, western, and simplified translation of the Book of Mormon",
-            date: "June 2024",
-        },
-        {
-            name: "Typing tutor in React",
-            github_link: "https://github.com/jonnyjackson26/spring2024USU-cs2610-reactTypingTutor",
-            youtube_link: "https://www.youtube.com/watch?v=A7DTQ8dOGsA",
-            link: "",
-            content: "typingTutor.png",
-            description: "Typing tutor with React",
-            date: "April 2024",
-        },
-        {
-            name: "Web Server from scratch in Python",
-            github_link: "https://github.com/jonnyjackson26/spring2024USU-cs2610-webServerFromScratch",
-            youtube_link: "https://www.youtube.com/watch?v=2LZ9Ox9JErY",
-            description: "Created a simple web server from scratch in Python",
-            date: "April 2024",
-        },
-    ];
+    const [projects, setProjects] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            const sheetId = "1k9um8xdBbSht23mFyRMzHIOxojm7h1TiAs-630PCTUE";
+            const apiKey = google_api_key;
+            const range = "Sheet1";
+
+            const response = await axios.get(
+                `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`
+            );
+
+            const rows = response.data.values;
+            const headers = rows[0];
+            const data = rows.slice(1).map((row) => {
+                let project = {};
+                headers.forEach((header, index) => {
+                    project[header] = row[index];
+                });
+                return project;
+            });
+
+            setProjects(data);
+            setLoading(false);
+        };
+
+        fetchProjects();
+    }, []);
+
+    const getYouTubeThumbnailUrl = (youtubeLink) => {
+        const url = new URL(youtubeLink);
+        const videoId = url.searchParams.get("v");
+        return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;  // High-quality thumbnail
+    };
+
+    const getYouTubeEmbedUrl = (youtubeLink) => {
+        const url = new URL(youtubeLink);
+        const videoId = url.searchParams.get("v");
+        return `https://www.youtube.com/embed/${videoId}`;
+    };
+
+    const [loadedVideos, setLoadedVideos] = useState({});
+
+    const loadVideo = (index) => {
+        setLoadedVideos((prev) => ({ ...prev, [index]: true }));
+    };
 
     return (
         <div className="projects-container">
             <h1>My Projects</h1>
-            <div className="projects-grid">
-                {projects.map((project, index) => (
-                    <div key={index} className="project-card">
-                        <img src={project.content} alt={project.name} className="project-image" />
-                        <div className="project-info">
-                            <h3>{project.name}</h3>
-                            <p className="project-date">{project.date}</p>
-                            <p>{project.description}</p>
-                            <div className="project-links">
-                                {project.link && <a href={project.link} target="_blank" rel="noopener noreferrer">Live Site</a>}
-                                {project.github_link && <a href={project.github_link} target="_blank" rel="noopener noreferrer">GitHub</a>}
-                                {project.youtube_link && <a href={project.youtube_link} target="_blank" rel="noopener noreferrer">YouTube</a>}
+            {loading ? (
+                <p>Loading projects...</p>
+            ) : (
+                <div className="projects-grid">
+                    {projects.map((project, index) => (
+                        <div key={index} className="project-card">
+                            {project.content ? (
+                                <img src={project.content} alt={project.name} className="project-image" />
+                            ) : project.youtube_link ? (
+                                loadedVideos[index] ? (
+                                    <iframe
+                                        className="project-video"
+                                        width="100%"
+                                        height="300px"
+                                        src={getYouTubeEmbedUrl(project.youtube_link)}
+                                        title={project.name}
+                                        frameBorder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                        loading="lazy"
+                                    ></iframe>
+                                ) : (
+                                    <div className="youtube-placeholder" onClick={() => loadVideo(index)}>
+                                        <img
+                                            src={getYouTubeThumbnailUrl(project.youtube_link)}
+                                            alt={project.name}
+                                            className="youtube-thumbnail"
+                                        />
+                                        <div className="play-button-overlay">
+                                            <div className="play-button"></div>
+                                        </div>
+                                    </div>
+                                )
+                            ) : (
+                                <p>No content available</p>
+                            )}
+                            <div className="project-info">
+                                <h3>{project.name}</h3>
+                                <p className="project-date">{project.date}</p>
+                                <p>{project.description}</p>
+                                <div className="project-links">
+                                    {project.link && <a href={project.link} target="_blank" rel="noopener noreferrer">Live Site</a>}
+                                    {project.github_link && <a href={project.github_link} target="_blank" rel="noopener noreferrer">GitHub</a>}
+                                    {project.youtube_link && <a href={project.youtube_link} target="_blank" rel="noopener noreferrer">YouTube</a>}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
