@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import google_api_key from '../../../api_keys';
+import {google_api_key, sheet_id} from '../../../api_keys';
 import './Projects.css';
 
 const Projects = () => {
@@ -9,7 +9,7 @@ const Projects = () => {
 
     useEffect(() => {
         const fetchProjects = async () => {
-            const sheetId = "1k9um8xdBbSht23mFyRMzHIOxojm7h1TiAs-630PCTUE";
+            const sheetId = sheet_id;
             const apiKey = google_api_key;
             const range = "Sheet1";
 
