@@ -2,7 +2,6 @@ import React from 'react';
 import './Home.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
-
 const Home = () => {
     const experience = [
         {
@@ -27,7 +26,7 @@ const Home = () => {
             company: "Utah State University",
             role: "Computer Science TA",
             duration: "Aug 2024 - Current",
-            description: "Held office hours for students, graded assignments, and supported the professor in an intro level computer science course ",
+            description: "Held office hours for students, graded assignments, and supported the professor in an intro level computer science course.",
         }
     ];
 
@@ -46,14 +45,19 @@ const Home = () => {
         }
     ];
 
+    // Handler to scroll to a specific section by ID
+    const scrollToSection = (sectionId) => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+    };
+
     return (
         <div className="container">
             <nav className="sidebar">
                 <ul>
-                    <li><a href="#about">About Me</a></li>
+                    <li><button onClick={() => scrollToSection('about')}>About Me</button></li>
                     <li><a href="#projects">Projects</a></li>
-                    <li><a href="#education">Education</a></li>
-                    <li><a href="#experience">Experience</a></li>
+                    <li><button onClick={() => scrollToSection('education')}>Education</button></li>
+                    <li><button onClick={() => scrollToSection('experience')}>Experience</button></li>
                 </ul>
             </nav>
 
@@ -110,8 +114,6 @@ const Home = () => {
                         <a href="https://www.instagram.com/jonnyjackson_/" className="fab fa-instagram" target="_blank" rel="noopener noreferrer"></a>
                     </div>
                 </section>
-
-
             </div>
         </div>
     );

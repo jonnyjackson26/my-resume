@@ -1,7 +1,6 @@
 /* General Styling */
 .projects-container {
     padding: 40px;
-    animation: fadeIn 1.5s ease-in-out;
 }
 
 h1 {
@@ -115,18 +114,6 @@ h1 {
     transform: scale(1.1);
     opacity: 1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* Animations */

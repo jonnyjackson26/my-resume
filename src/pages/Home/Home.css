@@ -22,6 +22,11 @@ p {
     color: #444;
 }
 
+section {
+    scroll-margin-top: 40px;  /* Control scroll position, so the section isnt too close to the top when u auto scroll to it from the sidebar */
+}
+
+
 /* Sidebar Navigation */
 .sidebar {
     background-color: #333;
@@ -35,7 +40,7 @@ p {
     padding: 0;
 }
 
-.sidebar ul li {
+.sidebar ul li, .sidebar ul li button {
     margin-bottom: 20px;
 }
 
@@ -45,8 +50,19 @@ p {
     font-size: 18px;
     transition: color 0.3s ease;
 }
-
-.sidebar ul li a:hover {
+.sidebar ul li button {
+    background-color: transparent;
+    border:none;
+    margin:0px;
+    padding:0px;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
+    cursor:pointer;
+    font-family: 'Montserrat', sans-serif;
+}
+.sidebar ul li a:hover, .sidebar ul li button:hover {
     color: #ff5722;
 }
 
