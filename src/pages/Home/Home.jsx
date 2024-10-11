@@ -83,6 +83,9 @@ const Home = () => {
                             <a href={project.link} target="_blank" rel="noopener noreferrer">View Project</a>
                         </div>
                     ))}
+                    <a id="see-all-projects" href="#projects"><div className="project-card">
+                        <h3>See all Projects (20+)</h3>
+                    </div></a>
                 </section>
 
                 <section id="education">

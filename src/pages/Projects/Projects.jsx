@@ -105,6 +105,11 @@ const Projects = () => {
                     ))}
                 </div>
             )}
+
+        {/* Floating Action Button to Scroll Back Home */}
+        <a className="back-button" href="/">
+        ⬅
+        </a>
         </div>
     );
 };

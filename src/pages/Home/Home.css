@@ -105,7 +105,12 @@ section {
 }
 
 .download-resume-btn:hover {
-    background-color: #0056b3;
+    background-color: #ff5722;
+}
+
+#see-all-projects:hover {
+    color: #ff5722;
+    transition: color .3s ease;
 }
 
 /* Project and Job Cards */
