@@ -27,7 +27,10 @@ const Projects = () => {
                 return project;
             });
 
-            setProjects(data);
+            // Filter projects to only include those with "show" set to "yes"
+            const filteredProjects = data.filter(project => project.show && project.show.toLowerCase() === "yes");
+
+            setProjects(filteredProjects);
             setLoading(false);
         };
 
