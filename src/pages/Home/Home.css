@@ -146,22 +146,22 @@ section {
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin-top: 20px;
+    margin: 20px 0;
 }
 
 .social-links a {
-    text-decoration: none; /* Remove underline */
-    font-size: 24px;       /* Icon size */
-    color: #333;           /* Icon color */
+    text-decoration: none;
+    font-size: 24px;
+    color: #333;
     transition: color 0.3s ease, transform 0.3s ease;
     padding: 10px;
-    border-radius: 50%;    /* Add rounded background if needed */
-    background-color: #f5f5f5; /* Light background behind icons */
+    border-radius: 50%;
+    background-color: #f5f5f5;
 }
 
 .social-links a:hover {
-    color: #ff5722;        /* Change color on hover */
-    transform: scale(1.2); /* Slightly enlarge the icon on hover */
+    color: #ff5722;
+    transform: scale(1.2);
 }
 
 .fa-facebook { color: #4267B2; }

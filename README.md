@@ -70,3 +70,8 @@ This is my personal website and resume, built using:
 ## License
 
 All rights reserved © 2024 Jonny Jackson
+
+## How to run
+
+- npm install
+- create api_keys.js in root directory with google api key and sheet id

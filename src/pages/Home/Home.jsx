@@ -70,6 +70,14 @@ const Home = () => {
                         I served a mission (2021-2023) in the Dominican Republic for the Church of Jesus Christ of Latter-day Saints. <br/>
                         I love programming, long-distance running, and cycling. Fluent in Spanish and a proud Eagle Scout.
                     </p>
+                    <div className="social-links">
+                        <a href="https://www.facebook.com/jonny.jackson.98229/" className="fab fa-facebook-f" target="_blank" rel="noopener noreferrer"></a>
+                        <a href="mailto:jrsjackson26@gmail.com" className="fas fa-envelope"></a>
+                        <a href="https://linkedin.com/in/your-profile" className="fab fa-linkedin-in" target="_blank" rel="noopener noreferrer"></a>
+                        <a href="https://github.com/jonnyjackson26" className="fab fa-github" target="_blank" rel="noopener noreferrer"></a>
+                        <a href="https://www.youtube.com/channel/UCUPGPAKijHmEutSMKr6cnwg" className="fab fa-youtube" target="_blank" rel="noopener noreferrer"></a>
+                        <a href="https://www.instagram.com/jonnyjackson_/" className="fab fa-instagram" target="_blank" rel="noopener noreferrer"></a>
+                    </div>
                     <a href="/resume-jonny-jackson.pdf" download className="download-resume-btn">Download PDF Resume</a>
                 </section>
 
@@ -104,18 +112,6 @@ const Home = () => {
                             <p>{job.description}</p>
                         </div>
                     ))}
-                </section>
-
-                <section id="contact">
-                    <h2>Contact Me</h2>
-                    <div className="social-links">
-                        <a href="https://www.facebook.com/jonny.jackson.98229/" className="fab fa-facebook-f" target="_blank" rel="noopener noreferrer"></a>
-                        <a href="mailto:jrsjackson26@gmail.com" className="fas fa-envelope"></a>
-                        <a href="https://linkedin.com/in/your-profile" className="fab fa-linkedin-in" target="_blank" rel="noopener noreferrer"></a>
-                        <a href="https://github.com/jonnyjackson26" className="fab fa-github" target="_blank" rel="noopener noreferrer"></a>
-                        <a href="https://www.youtube.com/channel/UCUPGPAKijHmEutSMKr6cnwg" className="fab fa-youtube" target="_blank" rel="noopener noreferrer"></a>
-                        <a href="https://www.instagram.com/jonnyjackson_/" className="fab fa-instagram" target="_blank" rel="noopener noreferrer"></a>
-                    </div>
                 </section>
             </div>
         </div>
