@@ -205,7 +205,9 @@ const Home = () => {
                             ></a>
                         ))}
                     </div>
-                    <a href="#" onClick={downloadResume} className="download-resume-btn">Download PDF Resume</a>
+                    <a href="#" onClick={downloadResume} className="download-resume-btn">
+                        <i className="fas fa-download"></i> Download PDF Resume
+                    </a>
                 </section>
 
                 <section id="projects">
@@ -242,7 +244,10 @@ const Home = () => {
                         <p>No education data available.</p>
                     ) : (
                         education.map((edu, index) => (
-                            <p key={index}><strong>{edu.institution}</strong> - {edu.degree} ({edu.duration}), GPA: {edu.gpa}</p>
+                            <p key={index}>
+                                <strong>{edu.degree}</strong> - {edu.institution} ({edu.duration})
+                                {edu.gpa && <span>, GPA: {edu.gpa}</span>}
+                            </p>
                         ))
                     )}
                 </section>
