@@ -65,7 +65,8 @@ const Home = () => {
         try {
             const { data, error } = await supabase
                 .from('education')
-                .select('*');
+                .select('*')
+                .eq('show', true);
             
             if (error) {
                 console.error('Error fetching education:', error);
@@ -83,7 +84,8 @@ const Home = () => {
         try {
             const { data, error } = await supabase
                 .from('work_experience')
-                .select('*');
+                .select('*')
+                .eq('show', true);
             
             if (error) {
                 console.error('Error fetching work experience:', error);
