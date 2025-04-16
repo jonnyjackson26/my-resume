@@ -1,9 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Home.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { supabase } from '../../supabaseClient';
 
 const Home = () => {
+    const [profileImageUrl, setProfileImageUrl] = useState(null);
+    
+    useEffect(() => {
+        fetchProfileImage();
+    }, []);
+
+    // Function to fetch profile image from Supabase
+    const fetchProfileImage = async () => {
+        try {
+            const { data, error } = await supabase
+                .storage
+                .from('photos')
+                .getPublicUrl('myPfp.jpg');
+            
+            if (error) {
+                console.error('Error fetching profile image:', error);
+                return;
+            }
+            
+            setProfileImageUrl(data.publicUrl);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
     const experience = [
         {
             company: "Aptive Pest Control",
@@ -93,7 +118,11 @@ const Home = () => {
             <div className="content">
                 <section id="about">
                     <h1>Jonny Jackson</h1>
-                    <img src="myPfp.jpg" alt="Jonny Jackson" className="headshot" />
+                    <img 
+                        src={profileImageUrl || 'myPfp.jpg'} 
+                        alt="Jonny Jackson" 
+                        className="headshot" 
+                    />
                     <p>
                         I'm a 20-year-old computer science major at Utah State University, originally from Kirtland, Ohio. <br/>
                         I served a mission (2021-2023) in the Dominican Republic for the Church of Jesus Christ of Latter-day Saints. <br/>
