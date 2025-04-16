@@ -65,7 +65,7 @@ This is my personal website and resume, built using:
 - React
 - Vite
 - Firebase Hosting
-- Google Sheets API (for project management)
+- Supabase (for project data storage)
 
 ## License
 
@@ -74,4 +74,4 @@ All rights reserved © 2024 Jonny Jackson
 ## How to run
 
 - npm install
-- create api_keys.js in root directory with google api key and sheet id
+- The Supabase connection is configured in src/supabaseClient.js

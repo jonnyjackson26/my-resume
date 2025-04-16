@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import {google_api_key, sheet_id} from '../../../api_keys';
+import { supabase } from '../../supabaseClient';
 import './Projects.css';
 
 const Projects = () => {
@@ -9,29 +8,29 @@ const Projects = () => {
 
     useEffect(() => {
         const fetchProjects = async () => {
-            const sheetId = sheet_id;
-            const apiKey = google_api_key;
-            const range = "Sheet1";
+            try {
+                // Query all projects from Supabase
+                const { data, error } = await supabase
+                    .from('projects')
+                    .select('*');
 
-            const response = await axios.get(
-                `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`
-            );
+                if (error) {
+                    console.error('Error fetching projects:', error);
+                    setLoading(false);
+                    return;
+                }
 
-            const rows = response.data.values;
-            const headers = rows[0];
-            const data = rows.slice(1).map((row) => {
-                let project = {};
-                headers.forEach((header, index) => {
-                    project[header] = row[index];
-                });
-                return project;
-            });
+                // Filter projects to only include those with "show" set to "yes" (case-insensitive)
+                const filteredProjects = data.filter(
+                    project => project.show && project.show.toLowerCase() === "yes"
+                );
 
-            // Filter projects to only include those with "show" set to "yes"
-            const filteredProjects = data.filter(project => project.show && project.show.toLowerCase() === "yes");
-
-            setProjects(filteredProjects);
-            setLoading(false);
+                setProjects(filteredProjects);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error:', error);
+                setLoading(false);
+            }
         };
 
         fetchProjects();

@@ -1,5 +1,6 @@
 #api_keys
 api_keys.js
+src/supabaseClient.js
 
 # Logs
 logs
