@@ -1,6 +1,7 @@
 import React from 'react';
 import './Home.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { supabase } from '../../supabaseClient';
 
 const Home = () => {
     const experience = [
@@ -50,6 +51,34 @@ const Home = () => {
         document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
     };
 
+    // Function to download resume from Supabase storage
+    const downloadResume = async (e) => {
+        e.preventDefault();
+        try {
+            const { data, error } = await supabase
+                .storage
+                .from('resume-pdf')
+                .download('resume-jonny-jackson.pdf');
+            
+            if (error) {
+                console.error('Error downloading resume:', error);
+                return;
+            }
+            
+            // Create a download link for the PDF
+            const url = URL.createObjectURL(data);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'resume-jonny-jackson.pdf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
     return (
         <div className="container">
             <nav className="sidebar">
@@ -78,7 +107,7 @@ const Home = () => {
                         <a href="https://www.youtube.com/channel/UCUPGPAKijHmEutSMKr6cnwg" className="fab fa-youtube" target="_blank" rel="noopener noreferrer"></a>
                         <a href="https://www.instagram.com/jonnyjackson_/" className="fab fa-instagram" target="_blank" rel="noopener noreferrer"></a>
                     </div>
-                    <a href="/resume-jonny-jackson.pdf" download className="download-resume-btn">Download PDF Resume</a>
+                    <a href="#" onClick={downloadResume} className="download-resume-btn">Download PDF Resume</a>
                 </section>
 
                 <section id="projects">
