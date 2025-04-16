@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Home.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { supabase } from '../../supabaseClient';
+import ProjectCard from '../../components/ProjectCard';
 
 const Home = () => {
     const [profileImageUrl, setProfileImageUrl] = useState(null);
@@ -10,6 +11,7 @@ const Home = () => {
     const [socialLinks, setSocialLinks] = useState([]);
     const [bioContent, setBioContent] = useState('');
     const [loading, setLoading] = useState(true);
+    const [featuredProjects, setFeaturedProjects] = useState([]);
     
     useEffect(() => {
         fetchProfileImage();
@@ -17,6 +19,7 @@ const Home = () => {
         fetchWorkExperience();
         fetchSocialLinks();
         fetchBio();
+        fetchFeaturedProjects();
     }, []);
 
     // Function to fetch profile image from Supabase
@@ -113,20 +116,24 @@ const Home = () => {
         }
     };
 
-    const projects = [
-        {
-            name: "Restoration Tour Group",
-            link: "http://restorationtourgroup.com",
-            content:"resto-tours-group.png",
-            description: "Created a website using React for a religious tour group company"
-        },
-        {
-            name: "Book of Mormon Languages",
-            link: "http://bom-languages.web.app/",
-            content: "bom-languages.png",
-            description: "Developed a website for seamlessly transitioning between many languages while reading the Book of Mormon."
+    // Function to fetch featured projects (with show_on_homepage = true)
+    const fetchFeaturedProjects = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('projects')
+                .select('*')
+                .eq('show_on_homepage', true);
+            
+            if (error) {
+                console.error('Error fetching featured projects:', error);
+                return;
+            }
+            
+            setFeaturedProjects(data || []);
+        } catch (error) {
+            console.error('Error:', error);
         }
-    ];
+    };
 
     // Handler to scroll to a specific section by ID
     const scrollToSection = (sectionId) => {
@@ -200,18 +207,29 @@ const Home = () => {
                 </section>
 
                 <section id="projects">
-                    <h2>Projects</h2>
-                    {projects.map((project, index) => (
-                        <div key={index} className="project-card">
-                            <h3>{project.name}</h3>
-                            <img src={project.content} alt="Project example" />
-                            <p>{project.description}</p>
-                            <a href={project.link} target="_blank" rel="noopener noreferrer">View Project</a>
+                    <h2>Featured Projects</h2>
+                    <div className={`featured-projects-grid ${
+                        featuredProjects.length === 1 ? 'one-project' : 
+                        featuredProjects.length === 2 ? 'two-projects' :
+                        featuredProjects.length === 3 ? 'three-projects' :
+                        featuredProjects.length === 4 ? 'four-projects' :
+                        featuredProjects.length === 5 ? 'five-projects' : ''
+                    }`}>
+                        {featuredProjects.length === 0 ? (
+                            <p>No featured projects available.</p>
+                        ) : (
+                            featuredProjects.map((project, index) => (
+                                <div key={index} className="featured-project-item">
+                                    <ProjectCard project={project} />
+                                </div>
+                            ))
+                        )}
+                    </div>
+                    <a id="see-all-projects" href="#projects" className="see-all-link">
+                        <div className="view-all-projects">
+                            <h3>See all Projects</h3>
                         </div>
-                    ))}
-                    <a id="see-all-projects" href="#projects"><div className="project-card">
-                        <h3>See all Projects (20+)</h3>
-                    </div></a>
+                    </a>
                 </section>
 
                 <section id="education">
