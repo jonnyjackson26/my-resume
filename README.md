@@ -66,6 +66,7 @@ This is my personal website and resume, built using:
 - Vite
 - Firebase Hosting
 - Supabase (for project data storage)
+- Firebase Analytics (for visitor tracking)
 
 ## License
 
@@ -75,5 +76,9 @@ All rights reserved © 2025 Jonny Jackson
 
 - npm install
 - The Supabase connection is configured in src/supabaseClient.js
+- Setup Firebase:
+  1. Copy `src/config/firebaseConfig.example.js` to `src/config/firebaseConfig.js`
+  2. Replace the placeholder values with your actual Firebase config values
+  3. These values can be found in your Firebase project settings
 - npm run build
 - firebase deploy

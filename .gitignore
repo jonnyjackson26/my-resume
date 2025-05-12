@@ -1,6 +1,7 @@
 #api_keys
 api_keys.js
 src/supabaseClient.js
+src/config/firebaseConfig.js
 
 # Logs
 logs
