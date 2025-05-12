@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Home.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { supabase } from '../../supabaseClient';
@@ -12,6 +12,11 @@ const Home = () => {
     const [bioContent, setBioContent] = useState('');
     const [loading, setLoading] = useState(true);
     const [featuredProjects, setFeaturedProjects] = useState([]);
+    const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
+    const carouselIntervalRef = useRef(null);
+    const [slideHeight, setSlideHeight] = useState("auto");
+    const slideContainerRef = useRef(null);
+    const projectCardRefs = useRef({});
     
     useEffect(() => {
         fetchProfileImage();
@@ -170,6 +175,81 @@ const Home = () => {
         }
     };
 
+    // Function to reset the carousel timer
+    const resetCarouselTimer = (stopTimer = false) => {
+        if (carouselIntervalRef.current) {
+            clearInterval(carouselIntervalRef.current);
+        }
+        if (!stopTimer) {
+            carouselIntervalRef.current = setInterval(goToNextProject, 3000);
+        }
+    };
+
+    // Function to handle carousel navigation
+    const goToProject = (index) => {
+        setCurrentProjectIndex(index);
+        resetCarouselTimer(true);
+    };
+
+    // Function to go to next project
+    const goToNextProject = () => {
+        setCurrentProjectIndex((prevIndex) => 
+            prevIndex === featuredProjects.length - 1 ? 0 : prevIndex + 1
+        );
+        resetCarouselTimer(false);
+    };
+
+    // Function to go to previous project
+    const goToPrevProject = () => {
+        setCurrentProjectIndex((prevIndex) => 
+            prevIndex === 0 ? featuredProjects.length - 1 : prevIndex - 1
+        );
+        resetCarouselTimer(true);
+    };
+
+    // Set up carousel timer
+    useEffect(() => {
+        if (featuredProjects.length > 1) {
+            resetCarouselTimer(false);
+        }
+        
+        return () => {
+            if (carouselIntervalRef.current) {
+                clearInterval(carouselIntervalRef.current);
+            }
+        };
+    }, [featuredProjects]);
+
+    // Update the height of the carousel based on the current project
+    useEffect(() => {
+        if (featuredProjects.length > 0 && projectCardRefs.current[currentProjectIndex]) {
+            const updateHeight = () => {
+                const currentCard = projectCardRefs.current[currentProjectIndex];
+                if (currentCard) {
+                    // Get the computed height including padding
+                    const cardHeight = currentCard.offsetHeight;
+                    // Add padding to ensure enough space (reduced from 40 to 20)
+                    const containerPadding = 20; // 10px top + 10px bottom
+                    setSlideHeight(`${cardHeight + containerPadding}px`);
+                }
+            };
+            
+            // Initial update
+            updateHeight();
+            
+            // Update again after a short delay to ensure images are loaded
+            const timer = setTimeout(updateHeight, 100);
+            
+            // Add resize listener to handle window size changes
+            window.addEventListener('resize', updateHeight);
+            
+            return () => {
+                clearTimeout(timer);
+                window.removeEventListener('resize', updateHeight);
+            };
+        }
+    }, [currentProjectIndex, featuredProjects]);
+
     return (
         <div className="container">
             <nav className="sidebar">
@@ -212,23 +292,70 @@ const Home = () => {
 
                 <section id="projects">
                     <h2>Featured Projects</h2>
-                    <div className={`featured-projects-grid ${
-                        featuredProjects.length === 1 ? 'one-project' : 
-                        featuredProjects.length === 2 ? 'two-projects' :
-                        featuredProjects.length === 3 ? 'three-projects' :
-                        featuredProjects.length === 4 ? 'four-projects' :
-                        featuredProjects.length === 5 ? 'five-projects' : ''
-                    }`}>
-                        {featuredProjects.length === 0 ? (
-                            <p>No featured projects available.</p>
-                        ) : (
-                            featuredProjects.map((project, index) => (
-                                <div key={index} className="featured-project-item">
-                                    <ProjectCard project={project} />
+                    {featuredProjects.length === 0 ? (
+                        <p>No featured projects available.</p>
+                    ) : (
+                        <div className="featured-projects-carousel">
+                            <div 
+                                className="carousel-container"
+                                style={{ height: slideHeight, transition: "height 0.3s ease-in-out" }}
+                                ref={slideContainerRef}
+                            >
+                                <button 
+                                    className="carousel-nav-btn prev-btn" 
+                                    onClick={goToPrevProject}
+                                    aria-label="Previous project"
+                                >
+                                    <i className="fas fa-chevron-left"></i>
+                                </button>
+                                
+                                <div className="carousel-content">
+                                    <div 
+                                        className="carousel-slide" 
+                                        style={{ 
+                                            transform: `translateX(-${currentProjectIndex * 100}%)`
+                                        }}
+                                    >
+                                        {featuredProjects.map((project, index) => (
+                                            <div 
+                                                key={index} 
+                                                className="carousel-item"
+                                            >
+                                                <div 
+                                                    ref={el => projectCardRefs.current[index] = el}
+                                                    className="project-wrapper"
+                                                >
+                                                    <ProjectCard project={project} />
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                            ))
-                        )}
-                    </div>
+                                
+                                <button 
+                                    className="carousel-nav-btn next-btn" 
+                                    onClick={() => {
+                                        goToNextProject();
+                                        resetCarouselTimer(true);
+                                    }}
+                                    aria-label="Next project"
+                                >
+                                    <i className="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            
+                            <div className="carousel-indicators">
+                                {featuredProjects.map((_, index) => (
+                                    <button
+                                        key={index}
+                                        className={`carousel-indicator ${index === currentProjectIndex ? 'active' : ''}`}
+                                        onClick={() => goToProject(index)}
+                                        aria-label={`Go to project ${index + 1}`}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    )}
                     <a id="see-all-projects" href="#projects" className="see-all-link">
                         <div className="view-all-projects">
                             <h3>See all Projects</h3>
