@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import './Home.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { supabase } from '../../supabaseClient';
 import ProjectCard from '../../components/ProjectCard';
+import { Context } from '../../main';
 
 const Home = () => {
     const [profileImageUrl, setProfileImageUrl] = useState(null);
@@ -19,6 +20,7 @@ const Home = () => {
     const slideContainerRef = useRef(null);
     const projectCardRefs = useRef({});
     const carouselRef = useRef(null);
+    const { logAnalyticsEvent } = useContext(Context);
     
     useEffect(() => {
         fetchProfileImage();
@@ -144,15 +146,15 @@ const Home = () => {
         }
     };
 
-    // Handler to scroll to a specific section by ID
-    const scrollToSection = (sectionId) => {
-        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
-    };
-
     // Function to download resume from Supabase storage
     const downloadResume = async (e) => {
         e.preventDefault();
         try {
+            // Track the resume download event
+            logAnalyticsEvent('resume_download', {
+                timestamp: new Date().toISOString()
+            });
+            
             const { data, error } = await supabase
                 .storage
                 .from('resume-pdf')
@@ -193,6 +195,11 @@ const Home = () => {
 
     // Function to manually rotate carousel
     const manualNavigation = (direction) => {
+        // Track carousel navigation event
+        logAnalyticsEvent('carousel_navigation', {
+            direction: direction
+        });
+        
         stopAutoplay();
         if (direction === 'next') {
             goToNextProject();
@@ -305,6 +312,28 @@ const Home = () => {
             };
         }
     }, [currentProjectIndex, featuredProjects]);
+
+    // Handler for specific indicator click
+    const goToProject = (index) => {
+        // Track direct project selection
+        logAnalyticsEvent('select_project', {
+            project_index: index,
+            project_title: featuredProjects[index]?.title || 'Unknown'
+        });
+        
+        stopAutoplay();
+        setCurrentProjectIndex(index);
+    };
+    
+    // Handler to scroll to a specific section by ID
+    const scrollToSection = (sectionId) => {
+        // Track section navigation
+        logAnalyticsEvent('section_view', {
+            section_id: sectionId
+        });
+        
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+    };
 
     return (
         <div className="container">
