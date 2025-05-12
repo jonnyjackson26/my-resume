@@ -69,9 +69,11 @@ This is my personal website and resume, built using:
 
 ## License
 
-All rights reserved © 2024 Jonny Jackson
+All rights reserved © 2025 Jonny Jackson
 
 ## How to run
 
 - npm install
 - The Supabase connection is configured in src/supabaseClient.js
+- npm run build
+- firebase deploy

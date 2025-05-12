@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './Home.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { supabase } from '../../supabaseClient';
@@ -13,10 +13,12 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
     const [featuredProjects, setFeaturedProjects] = useState([]);
     const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
-    const carouselIntervalRef = useRef(null);
     const [slideHeight, setSlideHeight] = useState("auto");
+    const [autoplayEnabled, setAutoplayEnabled] = useState(false);
+    const autoplayTimerRef = useRef(null);
     const slideContainerRef = useRef(null);
     const projectCardRefs = useRef({});
+    const carouselRef = useRef(null);
     
     useEffect(() => {
         fetchProfileImage();
@@ -175,50 +177,104 @@ const Home = () => {
         }
     };
 
-    // Function to reset the carousel timer
-    const resetCarouselTimer = (stopTimer = false) => {
-        if (carouselIntervalRef.current) {
-            clearInterval(carouselIntervalRef.current);
-        }
-        if (!stopTimer) {
-            carouselIntervalRef.current = setInterval(goToNextProject, 3000);
-        }
-    };
-
-    // Function to handle carousel navigation
-    const goToProject = (index) => {
-        setCurrentProjectIndex(index);
-        resetCarouselTimer(true);
-    };
-
     // Function to go to next project
-    const goToNextProject = () => {
+    const goToNextProject = useCallback(() => {
         setCurrentProjectIndex((prevIndex) => 
             prevIndex === featuredProjects.length - 1 ? 0 : prevIndex + 1
         );
-        resetCarouselTimer(false);
-    };
+    }, [featuredProjects.length]);
 
     // Function to go to previous project
     const goToPrevProject = () => {
         setCurrentProjectIndex((prevIndex) => 
             prevIndex === 0 ? featuredProjects.length - 1 : prevIndex - 1
         );
-        resetCarouselTimer(true);
     };
 
-    // Set up carousel timer
-    useEffect(() => {
-        if (featuredProjects.length > 1) {
-            resetCarouselTimer(false);
+    // Function to manually rotate carousel
+    const manualNavigation = (direction) => {
+        stopAutoplay();
+        if (direction === 'next') {
+            goToNextProject();
+        } else {
+            goToPrevProject();
         }
+    };
+
+    // Function to start autoplay
+    const startAutoplay = useCallback(() => {
+        if (autoplayTimerRef.current) {
+            clearInterval(autoplayTimerRef.current);
+        }
+        autoplayTimerRef.current = setInterval(goToNextProject, 3000);
+        setAutoplayEnabled(true);
+    }, [goToNextProject]);
+    
+    // Function to stop autoplay
+    const stopAutoplay = useCallback(() => {
+        if (autoplayTimerRef.current) {
+            clearInterval(autoplayTimerRef.current);
+            autoplayTimerRef.current = null;
+        }
+        setAutoplayEnabled(false);
+    }, []);
+    
+    // Setup visibility observer with 100% reliability
+    useEffect(() => {
+        if (!carouselRef.current) return;
         
+        // Create intersection observer
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const [entry] = entries;
+                if (entry.isIntersecting) {
+                    startAutoplay();
+                } else {
+                    stopAutoplay();
+                }
+            },
+            {
+                root: null, // viewport
+                rootMargin: '0px',
+                threshold: 0.1, // 10% visibility triggers
+            }
+        );
+        
+        // Start observing
+        observer.observe(carouselRef.current);
+        
+        // Clean up
         return () => {
-            if (carouselIntervalRef.current) {
-                clearInterval(carouselIntervalRef.current);
+            if (carouselRef.current) {
+                observer.unobserve(carouselRef.current);
+            }
+            stopAutoplay();
+        };
+    }, [startAutoplay, stopAutoplay, featuredProjects.length]);
+    
+    // Add document visibility change detection (for tab switching)
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (document.hidden) {
+                stopAutoplay();
+            } else {
+                // Only restart if element is currently in view
+                const isInView = carouselRef.current && 
+                    carouselRef.current.getBoundingClientRect().top < window.innerHeight &&
+                    carouselRef.current.getBoundingClientRect().bottom > 0;
+                    
+                if (isInView) {
+                    startAutoplay();
+                }
             }
         };
-    }, [featuredProjects]);
+        
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, [startAutoplay, stopAutoplay]);
 
     // Update the height of the carousel based on the current project
     useEffect(() => {
@@ -295,7 +351,7 @@ const Home = () => {
                     {featuredProjects.length === 0 ? (
                         <p>No featured projects available.</p>
                     ) : (
-                        <div className="featured-projects-carousel">
+                        <div className="featured-projects-carousel" ref={carouselRef}>
                             <div 
                                 className="carousel-container"
                                 style={{ height: slideHeight, transition: "height 0.3s ease-in-out" }}
@@ -303,7 +359,7 @@ const Home = () => {
                             >
                                 <button 
                                     className="carousel-nav-btn prev-btn" 
-                                    onClick={goToPrevProject}
+                                    onClick={() => manualNavigation('prev')}
                                     aria-label="Previous project"
                                 >
                                     <i className="fas fa-chevron-left"></i>
@@ -334,10 +390,7 @@ const Home = () => {
                                 
                                 <button 
                                     className="carousel-nav-btn next-btn" 
-                                    onClick={() => {
-                                        goToNextProject();
-                                        resetCarouselTimer(true);
-                                    }}
+                                    onClick={() => manualNavigation('next')}
                                     aria-label="Next project"
                                 >
                                     <i className="fas fa-chevron-right"></i>
