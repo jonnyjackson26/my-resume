@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { createHashRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/Home/Home';
 import Projects from './pages/Projects/Projects';
+import OnBelayPrivacyPolicy from './pages/PrivacyPolicies/OnBelay';
 import app, { analytics, logAnalyticsEvent } from './firebaseClient';
 
 const router = createHashRouter([
@@ -14,6 +15,10 @@ const router = createHashRouter([
     path: "/projects",
     element: <Projects />
   },
+  {
+    path: "/on-belay-privacy-policy",
+    element: <OnBelayPrivacyPolicy />
+  }
 ])
 
 export const Context = React.createContext();
