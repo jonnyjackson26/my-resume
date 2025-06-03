@@ -1,10 +1,11 @@
 import React from 'react';
 import './TempleTracker.css';
-
+import BackButton from '../../components/BackButton/BackButton';
 const TempleTracker = () => {
     return (
+        <>
         <div className="temple-tracker">
-            <h1>Temple Tracker</h1>
+            <h1>Temple Tracker App</h1>
             <p className="description">
                 This app helps members of The Church of Jesus Christ of Latter-day Saints track their worship in temples. 
                 Set goals, see analytics, track which temples you've been to, and keep a record of ordinances you've completed.
@@ -38,6 +39,8 @@ const TempleTracker = () => {
                 </p>
             </section>
         </div>
+        <BackButton />
+        </>
     );
 };
 

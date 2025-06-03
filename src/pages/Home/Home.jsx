@@ -340,11 +340,21 @@ const Home = () => {
             <nav className="sidebar">
                 <ul>
                     <li><button onClick={() => scrollToSection('about')}>About Me</button></li>
-                    <li><a href="#projects">Projects</a></li>
+                    <li>
+                        <a href="#projects">Projects</a>
+                        <ul className="subitems">
+                            <li>
+                                <a href="#temple-tracker" rel="noopener noreferrer">
+                                    Temple Tracker App
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li><button onClick={() => scrollToSection('education')}>Education</button></li>
                     <li><button onClick={() => scrollToSection('experience')}>Experience</button></li>
                 </ul>
             </nav>
+
 
             <div className="content">
                 <section id="about">

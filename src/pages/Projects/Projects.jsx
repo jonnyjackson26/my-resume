@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import './Projects.css';
 import ProjectCard from '../../components/ProjectCard';
-
+import BackButton from '../../components/BackButton/BackButton';
 const Projects = () => {
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -51,9 +51,7 @@ const Projects = () => {
             )}
 
             {/* Floating Action Button to Scroll Back Home */}
-            <a className="back-button" href="/">
-                ⬅
-            </a>
+            <BackButton />
         </div>
     );
 };
