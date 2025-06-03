@@ -1,0 +1,69 @@
+.temple-tracker {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.temple-tracker h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.description {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.store-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.store-button {
+    padding: 0.8rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+}
+
+.google-play {
+    background-color: #3bcc5a;
+    color: white;
+}
+
+.google-play:hover {
+    background-color: #30a74e;
+}
+
+.app-store {
+    background-color: #0070c9;
+    color: white;
+}
+
+.app-store:hover {
+    background-color: #005fa3;
+}
+
+.privacy-policy {
+    background: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.privacy-policy h2 {
+    margin-top: 0;
+}
+
+.privacy-policy p {
+    margin: 0;
+    line-height: 1.5;
+}

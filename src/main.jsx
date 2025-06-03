@@ -4,6 +4,7 @@ import { createHashRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/Home/Home';
 import Projects from './pages/Projects/Projects';
 import OnBelayPrivacyPolicy from './pages/PrivacyPolicies/OnBelay';
+import TempleTracker from './pages/TempleTracker/TempleTracker';
 import app, { analytics, logAnalyticsEvent } from './firebaseClient';
 
 const router = createHashRouter([
@@ -18,6 +19,10 @@ const router = createHashRouter([
   {
     path: "/on-belay-privacy-policy",
     element: <OnBelayPrivacyPolicy />
+  },
+  {
+    path: "/temple-tracker",
+    element: <TempleTracker />
   }
 ])
 
